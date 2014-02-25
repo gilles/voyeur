@@ -6,6 +6,10 @@
 Voyeur
 ======
 
+.. image:: https://api.travis-ci.org/gilles/voyeur.png?branch=master
+        :target: https://api.travis-ci.org/gilles/voyeur
+
+
 Voyeur is an simple library to serialize an object into another object.
 
 The goal is to create a representation that is easily `json.dumps()` friendly.
