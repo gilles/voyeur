@@ -6,7 +6,7 @@ from setuptools import setup
 
 setup(
     name='voyeur',
-    version='0.1.0',
+    version='0.1.1',
     packages=['tests', 'voyeur'],
     url='https://github.com/gilles/voyeur',
     license='MIT',

@@ -1,4 +1,7 @@
 # coding=utf-8
+"""
+Some complex types
+"""
 from voyeur import get_value
 
 

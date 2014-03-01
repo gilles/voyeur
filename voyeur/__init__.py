@@ -7,6 +7,14 @@ All rights reserved.
 """
 
 
+def is_sequence(_object):
+    """
+    Check the input is a iteratble but not a string
+    :param _object: The object to check
+    """
+    return not hasattr(_object, "strip") and hasattr(_object, "__iter__")
+
+
 def get_value(obj, key):
     """
     Get a value from different type of objects
@@ -33,12 +41,12 @@ def view(data, definition, **kwargs):
     :param kwargs: User defined arguments that can be passed to the callables
     :return: The view of the data
     """
-    if isinstance(data, (list, tuple)):
+    if is_sequence(data) and not isinstance(data, dict):
         return [view(d, definition) for d in data]
 
     result = {}
     for key, value in definition.items():
-        if isinstance(value, dict):
+        if isinstance(value, dict):  # TODO this could be more generic with __getitem__
             result[key] = view(get_value(data, key), value, **kwargs)
         else:
             if isinstance(value, Type):

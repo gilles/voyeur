@@ -69,6 +69,42 @@ class TestVoyeur(unittest.TestCase):
                               {'int': 2, 'str': 'string2'}],
                              result)
 
+    def test_iterators(self):
+        class Test(object):
+            def __init__(self):
+                self.list = [{'int': '1', 'str': 'string'}, {'int': '2', 'str': 'string2'}]
+
+            def __iter__(self):
+                return iter(self.list)
+
+        definition = {
+            'int': int,
+            'str': str
+        }
+        result = view(Test(), definition)
+        self.assertListEqual([{'int': 1, 'str': 'string'},
+                              {'int': 2, 'str': 'string2'}],
+                             result)
+
+    def test_generator(self):
+        data = [{'int': '1', 'str': 'string'},
+                {'int': '2', 'str': 'string2'}]
+
+        def gen():
+            i = 0
+            while i < len(data):
+                yield data[i]
+                i += 1
+
+        definition = {
+            'int': int,
+            'str': str
+        }
+        result = view(gen(), definition)
+        self.assertListEqual([{'int': 1, 'str': 'string'},
+                              {'int': 2, 'str': 'string2'}],
+                             result)
+
     def test_nested(self):
         definition = {
             'int': int,
@@ -84,6 +120,21 @@ class TestVoyeur(unittest.TestCase):
             'nested': {'n1': int}
         }
         data = {'int': '1', 'nested': [{'n1': '2'}, {'n1': '3'}]}
+        result = view(data, definition)
+        self.assertDictEqual({'int': 1, 'nested': [{'n1': 2}, {'n1': 3}]}, result)
+
+    def test_nested_generator(self):
+        def gen():
+            i = 2
+            while i < 4:
+                yield {'n1': i}
+                i += 1
+
+        definition = {
+            'int': int,
+            'nested': {'n1': int}
+        }
+        data = {'int': '1', 'nested': gen()}
         result = view(data, definition)
         self.assertDictEqual({'int': 1, 'nested': [{'n1': 2}, {'n1': 3}]}, result)
 
